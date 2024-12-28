@@ -1,12 +1,20 @@
 import { Task } from "../models/TaskModel";
+import mongoose from "mongoose";
 
 export interface TaskInterface {
+    create(taskData: Partial<Task> & { user: mongoose.Types.ObjectId }): Promise<Task>;
     
-    create(taskData:Partial<Task>)              :Promise<Task>;
-    findAll ()                                  :Promise<Task[]>;
-    findById (id:string)                        :Promise<Task | null>;
-    findByTitle (title: string)                 :Promise<Task | null>;
-    update (id:string, taskData: Partial<Task>) :Promise<Task | null>;
-    delete (id:string)                          :Promise<Task | null>;
-
+    findAll(userId: mongoose.Types.ObjectId): Promise<Task[]>;
+    
+    findById(id: string, userId: mongoose.Types.ObjectId): Promise<Task | null>;
+    
+    findByTitle(title: string, userId: mongoose.Types.ObjectId): Promise<Task | null>;
+    
+    update(
+        id: string, 
+        userId: mongoose.Types.ObjectId,
+        taskData: Partial<Task>
+    ): Promise<Task | null>;
+    
+    delete(id: string, userId: mongoose.Types.ObjectId): Promise<Task | null>;
 }

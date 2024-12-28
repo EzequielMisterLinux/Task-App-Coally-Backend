@@ -7,7 +7,6 @@ const router = Router();
 const userController = new UserController();
 const protectedMiddleware = new Protected();
 
-
 router.post('/register', async (req: Request, res: Response) => {
   await userController.createUser(req, res);
 });
@@ -34,6 +33,7 @@ router.post(
   '/create-task',
   protectedMiddleware.verifyToken,
   async (req: Request, res: Response) => {
+    const { userId } = req.body; 
     await taskController.createTask(req, res);
   }
 );
