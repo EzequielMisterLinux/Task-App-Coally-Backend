@@ -10,20 +10,25 @@ export interface Task extends Document{
         createAt       : Date,
 }
 
-const TaskShema = new Schema<Task>({
+const TaskSchema = new Schema<Task>({
     title: {
         type: String,
         required: [true, 'Title is required'] 
     },
-    description : {
+    description: {
         type: String,
-        required : [true, 'Description is required']
+        required: [true, 'Description is required']
     },
-    completed : { 
-        type : Boolean,
-        default : false
+    completed: { 
+        type: Boolean,
+        default: false
+    },
+    createAt: { 
+        type: Date,
+        default: Date.now
     }
-})
+});
 
 
-export const TaskModel = model<Task>('Tasks', TaskShema)
+
+export const TaskModel = model<Task>('Tasks', TaskSchema)

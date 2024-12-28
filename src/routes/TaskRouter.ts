@@ -1,10 +1,12 @@
 import { Router } from "express";
 import { TaskController } from '../controllers/TaskController';
 
+const router = Router();
 
+const taskController = new TaskController();
 
-const router = Router()
+router.get('/get-task/:id', (req, res) => taskController.getTask(req, res));
 
-const taskController = new TaskController()
+router.post('/create-task', (req, res) => taskController.createTask(req, res));
 
-router.get('/create-task', taskController.createTask)
+export default router;

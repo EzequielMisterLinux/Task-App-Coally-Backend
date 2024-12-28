@@ -1,53 +1,40 @@
 import { Task, TaskModel } from '../models/TaskModel';
+import { TaskInterface } from './TaskRepositoryInterface';
 
-interface TaskInterface {
-    
-    create(taskData                             :Partial<Task>):Promise<Task>;
-    findAll ()                                  :Promise<Task[]>;
-    findById (id:string)                        :Promise<Task | null>;
-    findByTitle (title: string)                 :Promise<Task | null>;
-    update (id:string, taskData: Partial<Task>) :Promise<Task | null>;
-    delete (id:string)                          :Promise<Task | null>;
 
-}
+
 
 export class TaskRepository implements TaskInterface {
 
-    async create(taskData: Partial<Task>):Promise<Task>{
-        const task = new TaskModel(taskData)
+    async create(taskData: Partial<Task>): Promise<Task> {
+        const task = new TaskModel(taskData);
 
-        return await task.save()
+
+        return await task.save();
     }
 
-    async findAll ():Promise<Task[]>{
-
-        return await TaskModel.find().sort({createAt: -1})
-    }
-
-    async findById (id:string):Promise<Task | null>{
+    async findAll(): Promise<Task[]> {
         
-        return await TaskModel.findById({id})
+        return await TaskModel.find().sort({ createAt: -1 });
     }
 
-    async findByTitle (title:string):Promise<Task | null>{
-        
-        return await TaskModel.findOne({title})
+    async findById(id: string): Promise<Task | null> {
+        return await TaskModel.findById(id); 
     }
 
-    async update (id:string, taskData: Partial<Task>):Promise<Task | null>{
+    async findByTitle(title: string): Promise<Task | null> {
+        return await TaskModel.findOne({ title });
+    }
 
-
+    async update(id: string, taskData: Partial<Task>): Promise<Task | null> {
         return await TaskModel.findByIdAndUpdate(
             id,
             taskData,
-            {new:true, runValidators:true}
-        )
+            { new: true, runValidators: true }
+        );
     }
 
-    async delete (id:string):Promise<Task | null>{
-        return await TaskModel.findByIdAndDelete(id)
+    async delete(id: string): Promise<Task | null> {
+        return await TaskModel.findByIdAndDelete(id);
     }
-
-
-
 }

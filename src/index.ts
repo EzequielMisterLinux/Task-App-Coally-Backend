@@ -1,6 +1,7 @@
 import { configDotenv } from "dotenv";
 import { MongoConnection } from "./database/Mongo";
 import express from "express";
+import router from "./routes/TaskRouter";
 
 configDotenv();
 
@@ -10,9 +11,11 @@ const PORT = process.env.PORT;
 
 server.use(express.json());
 
-server.use('/api', (req, res) => {
-    res.send({ message: "API is running!" });
-});
+// server.use('/', (req, res) => {
+//     res.send({ message: "API is running!" });
+// });
+
+server.use('/api', router)
 
 const startServer = async () => {
     try {
