@@ -1,65 +1,76 @@
 import { Router, Request, Response } from "express";
 import { TaskController } from '../controllers/TaskController';
 import { UserController } from '../controllers/UserController';
-import { Protected } from "../middlewares/Protected";
+import { Protected } from "../middlewares/security/Protected";
+import { TaskValidation } from '../middlewares/validations/TaskValidation';
 
 const router = Router();
 const userController = new UserController();
 const protectedMiddleware = new Protected();
+const taskController = new TaskController();
 
 router.post('/register', async (req: Request, res: Response) => {
-  await userController.createUser(req, res);
+    await userController.createUser(req, res);
 });
 
 router.post('/login', async (req: Request, res: Response) => {
-  await userController.login(req, res);
+    await userController.login(req, res);
 });
-
-router.get('/profile', protectedMiddleware.verifyToken, (req: Request, res: Response) => {
-  res.json({ user: req.body.user });
-});
-
-const taskController = new TaskController();
 
 router.get(
-  '/get-task/:id',
-  protectedMiddleware.verifyToken,
-  async (req: Request, res: Response) => {
-    await taskController.getTask(req, res);
-  }
+    '/profile',
+    protectedMiddleware.verifyToken,
+    (req: Request, res: Response) => {
+        res.json({ user: req.body.user });
+    }
+);
+
+router.get(
+    '/get-task/:id',
+    [
+        protectedMiddleware.verifyToken,
+        ...TaskValidation.getTaskValidation,
+    ],
+    async (req: Request, res: Response) => {
+        await taskController.getTask(req, res);
+    }
 );
 
 router.post(
-  '/create-task',
-  protectedMiddleware.verifyToken,
-  async (req: Request, res: Response) => {
-    const { userId } = req.body; 
-    await taskController.createTask(req, res);
-  }
+    '/create-task',
+    [
+        protectedMiddleware.verifyToken,
+        ...TaskValidation.createTaskValidation,
+    ],
+    async (req: Request, res: Response) => {
+        await taskController.createTask(req, res);
+    }
 );
 
-router.get(
-  '/all-tasks',
-  protectedMiddleware.verifyToken,
-  async (req: Request, res: Response) => {
+router.get('/all-tasks', protectedMiddleware.verifyToken, async (req: Request, res: Response) => {
     await taskController.getAllTasks(req, res);
-  }
-);
+});
 
 router.put(
-  '/update-task/:id',
-  protectedMiddleware.verifyToken,
-  async (req: Request, res: Response) => {
-    await taskController.updateTask(req, res);
-  }
+    '/update-task/:id',
+    [
+        protectedMiddleware.verifyToken,
+        ...TaskValidation.updateTaskValidation,
+    ],
+    async (req: Request, res: Response) => {
+        await taskController.updateTask(req, res);
+    }
 );
 
 router.delete(
-  '/delete-task/:id',
-  protectedMiddleware.verifyToken,
-  async (req: Request, res: Response) => {
-    await taskController.deleteTask(req, res);
-  }
+    '/delete-task/:id',
+    [
+        protectedMiddleware.verifyToken,
+        ...TaskValidation.deleteTaskValidation,
+    ],
+    async (req: Request, res: Response) => {
+        await taskController.deleteTask(req, res);
+    }
 );
 
 export default router;

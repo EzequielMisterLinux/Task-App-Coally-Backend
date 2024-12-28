@@ -2,12 +2,12 @@ import mongoose, { Document, Schema } from 'mongoose';
 
 
 export interface Task extends Document {
-    _id: mongoose.Types.ObjectId;
-    title: string;
-    description: string;
-    completed: boolean;
-    createAt: Date;
-    user: mongoose.Types.ObjectId;
+    _id          : mongoose.Types.ObjectId;
+    title        : string;
+    description  : string;
+    completed    : boolean;
+    createAt     : Date;
+    user         : mongoose.Types.ObjectId;
 }
 
 const TaskSchema = new Schema<Task>({

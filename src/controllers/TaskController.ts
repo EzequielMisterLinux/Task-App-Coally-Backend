@@ -3,11 +3,11 @@ import { TaskRepository } from '../repositories/TaskRepository';
 import mongoose from 'mongoose';
 
 interface TaskControllerInterface {
-  createTask(req: Request, res: Response): Promise<void>;
-  getAllTasks(req: Request, res: Response): Promise<void>;
-  getTask(req: Request, res: Response): Promise<void>;
-  updateTask(req: Request, res: Response): Promise<void>;
-  deleteTask(req: Request, res: Response): Promise<void>;
+  createTask(req: Request, res: Response)   : Promise<void>;
+  getAllTasks(req: Request, res: Response)  : Promise<void>;
+  getTask(req: Request, res: Response)      : Promise<void>;
+  updateTask(req: Request, res: Response)   : Promise<void>;
+  deleteTask(req: Request, res: Response)   : Promise<void>;
 }
 
 export class TaskController implements TaskControllerInterface {
