@@ -3,10 +3,10 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "npm run build && node src/index.js",
+    "test": "jest",
+    "start": "npm run build && node dist/index.js",
     "dev": "tsnd --respawn src/index.ts",
-    "clean": "rimraf dist",
+    "clean": "rm -rf dist",
     "build": "npm run clean && tsc"
   },
   "keywords": [],
@@ -15,7 +15,6 @@
   "description": "",
   "devDependencies": {
     "@types/node": "^22.10.2",
-    "rimraf": "^6.0.1",
     "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.7.2"
