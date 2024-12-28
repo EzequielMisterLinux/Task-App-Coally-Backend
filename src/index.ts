@@ -1,7 +1,7 @@
 import { configDotenv } from "dotenv";
 import { MongoConnection } from "./database/Mongo";
 import express from "express";
-import router from "./routes/TaskRouter";
+import router from "./routes/Router";
 
 configDotenv();
 

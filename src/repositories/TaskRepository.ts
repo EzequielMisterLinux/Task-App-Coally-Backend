@@ -1,5 +1,5 @@
 import { Task, TaskModel } from '../models/TaskModel';
-import { TaskInterface } from './TaskRepositoryInterface';
+import { TaskInterface } from '../interfaces/TaskInterface';
 
 
 
