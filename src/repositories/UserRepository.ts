@@ -15,3 +15,4 @@ export class UserRepository implements UserInterface {
     return await UserModel.findOne({ email });
   }
 }
+
