@@ -7,6 +7,9 @@ import cookieParser from "cookie-parser";
 import helmet from "helmet";
 import morgan from "morgan";
 import path from 'path';
+import swaggerUi from 'swagger-ui-express';
+import { specs } from "./swagger";
+
 
 configDotenv();
 
@@ -20,6 +23,7 @@ server.use(morgan('dev'));
 server.use(express.json());
 server.use(express.urlencoded({ extended: true }));
 server.use(cookieParser());
+
 
 server.use(
   helmet({
@@ -35,7 +39,11 @@ server.use(
   })
 );
 
-
+server.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs, {
+  swaggerOptions: {
+    persistAuthorization: true
+  }
+}));
 server.use(cors({
   origin: (origin, callback) => {
     const allowedOrigins = [FRONTEND_URL, UPLOAD_IMG];

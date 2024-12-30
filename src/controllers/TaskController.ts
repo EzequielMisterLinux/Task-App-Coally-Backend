@@ -65,13 +65,30 @@ export class TaskController implements TaskControllerInterface {
   async updateTask(req: Request, res: Response): Promise<void> {
     const { id } = req.params;
     try {
-      const userId = new mongoose.Types.ObjectId(req.body.user.userId);
-      const updatedTask = await this.taskRepository.update(id, userId, req.body);
-      updatedTask ? res.status(200).json(updatedTask) : res.status(404).json({ error: "Task not found or unauthorized" });
+        const userId = new mongoose.Types.ObjectId(req.body.user.userId);
+        
+
+        const { user, _id, createdAt, updatedAt, ...updateData } = req.body;
+        
+        const updatedTask = await this.taskRepository.update(id, userId, updateData);
+        
+        if (!updatedTask) {
+            res.status(404).json({ error: "Task not found or unauthorized" });
+            return;
+        }
+        
+        res.status(200).json({
+            message: "Task updated successfully",
+            task: updatedTask
+        });
     } catch (error) {
-      res.status(500).json({ error: "Error updating task" });
+        if (error instanceof Error) {
+            res.status(400).json({ error: error.message });
+        } else {
+            res.status(500).json({ error: "Error updating task" });
+        }
     }
-  }
+}
 
   async deleteTask(req: Request, res: Response): Promise<void> {
     const { id } = req.params;

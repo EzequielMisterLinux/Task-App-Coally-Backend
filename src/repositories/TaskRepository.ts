@@ -29,12 +29,35 @@ export class TaskRepository implements TaskInterface {
   }
 
   async update(id: string, userId: mongoose.Types.ObjectId, taskData: Partial<Task>): Promise<Task | null> {
-    return await TaskModel.findOneAndUpdate(
-      { _id: id, user: userId },
-      taskData,
-      { new: true, runValidators: true }
-    ).populate('user', 'names lastnames email');
-  }
+    try {
+
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            throw new Error('Invalid task ID');
+        }
+
+
+        const { user, ...updateData } = taskData;
+
+        const updatedTask = await TaskModel.findOneAndUpdate(
+            { 
+                _id: new mongoose.Types.ObjectId(id), 
+                user: userId 
+            },
+            { 
+                $set: updateData,
+                $currentDate: { updatedAt: true }
+            },
+            { 
+                new: true,
+                runValidators: true
+            }
+        ).populate('user', 'names lastnames email');
+
+        return updatedTask;
+    } catch (error) {
+        throw error;
+    }
+}
 
   async delete(id: string, userId: mongoose.Types.ObjectId): Promise<Task | null> {
     return await TaskModel.findOneAndDelete({ _id: id, user: userId });
