@@ -78,8 +78,8 @@ NODE_ENV=development
 
 1. Clone the repository:
 ```bash
-git clone [your-repo-url]
-cd [your-repo-name]
+git clone https://github.com/EzequielMisterLinux/Task-App-Coally-Backend.git
+cd Task-App-Coally-Backend
 ```
 
 2. Install dependencies:
