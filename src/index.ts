@@ -6,6 +6,7 @@ import router from "./routes/Router";
 import cookieParser from "cookie-parser";
 import helmet from "helmet";
 import morgan from "morgan";
+import fs from 'fs';
 import path from 'path';
 import swaggerUi from 'swagger-ui-express';
 import { specs } from "./swagger";
@@ -59,6 +60,13 @@ server.use(cors({
   exposedHeaders: ['set-cookie'],
 }));
 
+const UPLOAD_PATH = path.join(__dirname, '../uploads');
+
+
+if (!fs.existsSync(UPLOAD_PATH)) {
+  fs.mkdirSync(UPLOAD_PATH, { recursive: true });
+  console.log(`Carpeta creada en: ${UPLOAD_PATH}`);
+}
 
 server.use('/uploads', (req, res, next) => {
   res.setHeader('Cross-Origin-Resource-Policy', 'cross-origin');
